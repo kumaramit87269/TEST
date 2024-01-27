@@ -1,4 +1,3 @@
 this is my first git repositery file which is push by gitbash 
 authour = Amit kumar 
-<br>
 authour = Shilpi rathour

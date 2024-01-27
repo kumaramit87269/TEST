@@ -139,29 +139,37 @@ resource "aws_security_group" "Private-sg" {
   }
 
   tags = {
-    Name = "terraform_private_sg"
-  }
-}
-
-
-
-
-
-
-
-
-resource "aws_instance" "web" {
-  ami           = var.ami_id
-  instance_type = "t3.micro"
-  
-  subnet_id  = element(aws_subnet.cluster-vpc-subnets-public.*.id, count.index)
+    Name = "terraform_private_sg" subnet_id  = element(aws_subnet.cluster-vpc-subnets-public.*.id, count.index)
   associate_public_ip_address  = true
-  key_name = "key-01"
-  count = var.instance_count
+  key_name = "PUBLIC-KEY"
+  count = 1
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
 
   tags = {
-    Name = "MY_Terrafom_Instance-${count.index}"
+    Name = "MY_Terrafom_Instance-bastion-${count.index}"
   }
 }
+
+resource "aws_instance" "slave" {
+  ami = "ami-0d3f444bc76de0a79"
+  instance_type = "t2.micro"
+
+  subnet_id  = element(aws_subnet.cluster-vpc-subnets-public.*.id, count.index)
+  associate_public_ip_address  = false
+  key_name = "PUBLIC-KEY"
+  count = 2
+  vpc_security_group_ids = [aws_security_group.Private-sg.id]
+
+  tags = {
+    Name = "MY_Terrafom_Instance-private-${count.index}"
+  }
+  lifecycle {
+        ignore_changes = [tags,instance_type]
+
+}
+}
+
+  }
+}
+
 

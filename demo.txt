@@ -1,5 +1,7 @@
-This is my first git repositery file which is push by gitbash 
+this is my first git repositery file which is push by gitbash 
 authour = Amit kumar 
 authour = Shilpi rathour
 hello this is updated file
 date 4/2/2014
+Time 17:06
+
